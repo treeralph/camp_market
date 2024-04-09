@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/contentsImageView"
+        android:layout_width="@dimen/contents_item_image_size"
+        android:layout_height="@dimen/contents_item_image_size"
+        android:src="@drawable/image_placeholder"
+        android:scaleType="centerCrop"
+        android:layout_margin="@dimen/contents_item_image_margin"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/contentsTitleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="?android:textAppearanceMedium"
+        android:text="@string/contents_item_title_placeholder"
+        android:layout_marginStart="@dimen/contents_item_image_margin"
+        app:layout_constraintTop_toTopOf="@id/contentsImageView"
+        app:layout_constraintStart_toEndOf="@id/contentsImageView"/>
+
+    <TextView
+        android:id="@+id/contentsAddressTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/inter_text_margin"
+        style="?android:textAppearanceMedium"
+        android:text="@string/contents_item_locate_placeholder"
+        android:layout_marginStart="@dimen/contents_item_image_margin"
+        app:layout_constraintTop_toBottomOf="@+id/contentsTitleTextView"
+        app:layout_constraintStart_toEndOf="@id/contentsImageView"
+        android:textColor="?colorSecondary"/>
+
+    <TextView
+        android:id="@+id/contentsPriceValueTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/inter_text_margin"
+        android:text="@string/contents_item_price_placeholder"
+        android:layout_marginStart="@dimen/contents_item_image_margin"
+        app:layout_constraintTop_toBottomOf="@id/contentsAddressTextView"
+        app:layout_constraintStart_toEndOf="@id/contentsImageView"
+        android:textStyle="bold"
+        style="?android:textAppearanceMedium"
+        />
+
+    <TextView
+        android:id="@+id/contentsCountHeartTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/contentsImageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/number_text_placeholder"
+        android:textColor="?colorSecondary"
+        style="?android:textAppearanceMedium"
+        android:layout_marginEnd="@dimen/contents_item_image_margin"/>
+
+    <ImageView
+        android:id="@+id/contentsHeartImageView"
+        android:layout_width="@dimen/contents_icon_size"
+        android:layout_height="@dimen/contents_icon_size"
+        android:src="@drawable/ic_heart"
+        android:layout_marginEnd="@dimen/inter_text_margin"
+        app:layout_constraintBottom_toBottomOf="@id/contentsImageView"
+        app:layout_constraintTop_toTopOf="@+id/contentsCountChattingTextView"
+        app:layout_constraintEnd_toStartOf="@+id/contentsCountHeartTextView"/>
+    <TextView
+        android:id="@+id/contentsCountChattingTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/inter_text_margin"
+        app:layout_constraintBottom_toBottomOf="@id/contentsImageView"
+        app:layout_constraintEnd_toStartOf="@+id/contentsHeartImageView"
+        android:text="@string/number_text_placeholder"
+        android:textColor="?colorSecondary"
+        style="?android:textAppearanceMedium"/>
+    <ImageView
+        android:id="@+id/contentsChattingImageView"
+        android:layout_width="@dimen/contents_icon_size"
+        android:layout_height="@dimen/contents_icon_size"
+        android:src="@drawable/ic_chatting"
+        android:layout_marginEnd="@dimen/inter_text_margin"
+        app:layout_constraintBottom_toBottomOf="@id/contentsImageView"
+        app:layout_constraintTop_toTopOf="@id/contentsCountChattingTextView"
+        app:layout_constraintEnd_toStartOf="@+id/contentsCountChattingTextView"/>
+
+
+
+    
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

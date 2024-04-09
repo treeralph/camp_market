@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">CampCarrotMarket</string>
+    <string name="text_placeholder">Example</string>
+    <string name="locate_expand_imageview_description">Expand Locate</string>
+    <string name="contents_item_title_placeholder">fleamarket_overview</string>
+    <string name="contents_item_locate_placeholder">동네, 시간</string>
+    <string name="contents_item_price_placeholder">00,000원</string>
+    <string name="number_text_placeholder">NN</string>
+
+    <string name="content_user_name_placeholder">이름</string>
+    <string name="content_user_address_placeholder">장소</string>
+
+</resources>
