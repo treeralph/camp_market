@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    id("kotlin-android")
     id("kotlin-parcelize")
 }
 
@@ -10,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.campcarrotmarket"
-        minSdk = 28
+        minSdk = 29
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"

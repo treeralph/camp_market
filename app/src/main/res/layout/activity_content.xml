@@ -36,8 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:text="@string/content_user_name_placeholder"
-        android:textStyle="bold"
-        style="@style/TextAppearance.Material3.BodyLarge"
+        style="@style/user_name_text_style"
         app:layout_constraintStart_toEndOf="@+id/userProfileImageview"
         app:layout_constraintTop_toTopOf="@+id/userProfileImageview"
         app:layout_constraintBottom_toTopOf="@id/userAddressTextView"/>
@@ -55,6 +54,38 @@
         app:layout_constraintBottom_toBottomOf="@+id/userProfileImageview"
         app:layout_constraintTop_toBottomOf="@id/userNameTextView"/>
 
+
+    <ImageView
+        android:id="@+id/userTemperatureImageView"
+        android:layout_width="@dimen/user_temperature_image_size"
+        android:layout_height="@dimen/user_temperature_image_size"
+        android:src="@drawable/ic_happy_face"
+        android:layout_margin="@dimen/button_padding"
+        app:layout_constraintTop_toBottomOf="@+id/contentImageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/userTemperatureIndicTextView"/>
+
+    <!-- celsius ascii code - \u2103 -->
+    <TextView
+        android:id="@+id/userTemperatureTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:layout_marginEnd="@dimen/contents_item_image_margin"
+        app:layout_constraintTop_toTopOf="@id/userTemperatureImageView"
+        app:layout_constraintBottom_toBottomOf="@id/userTemperatureImageView"
+        app:layout_constraintEnd_toStartOf="@+id/userTemperatureImageView"/>
+    <TextView
+        android:id="@+id/userTemperatureIndicTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/button_padding"
+        android:text="@string/content_user_temperature_indic"
+        app:layout_constraintBottom_toTopOf="@+id/userInfoDivisor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/userTemperatureImageView"
+        style="@style/user_temperature_indic_text_style"/>
+
     <View
         android:id="@+id/userInfoDivisor"
         android:layout_width="match_parent"
@@ -64,6 +95,76 @@
         app:layout_constraintTop_toBottomOf="@+id/contentImageView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
+
+    <ScrollView
+        android:id="@+id/contentTextScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userInfoDivisor"
+        app:layout_constraintBottom_toTopOf="@+id/contentChattingButton">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/content_text_margin"
+            android:orientation="vertical"
+            tools:ignore="ScrollViewSize">
+            <TextView
+                android:id="@+id/contentTitleTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/content_title_placeholder"
+                android:layout_marginBottom="@dimen/content_text_margin"
+                style="@style/content_title_text_style"/>
+            <TextView
+                android:id="@+id/contentDescriptionTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/content_description_placeholder"
+                style="?android:textAppearanceLarge"/>
+        </LinearLayout>
+    </ScrollView>
+
+    <ImageView
+        android:id="@+id/contentLikeImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_heart"
+        android:padding="@dimen/button_padding"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <View
+        android:id="@+id/contentLikeDivisor"
+        android:layout_width="@dimen/divisor_thick"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="@+id/contentLikeImageView"
+        app:layout_constraintBottom_toBottomOf="@+id/contentLikeImageView"
+        app:layout_constraintStart_toEndOf="@id/contentLikeImageView"
+        android:background="?colorSecondary"/>
+
+    <TextView
+        android:id="@+id/contentPriceTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/content_price_text_placeholder"
+        app:layout_constraintStart_toEndOf="@+id/contentLikeDivisor"
+        app:layout_constraintEnd_toStartOf="@id/contentChattingButton"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <Button
+        android:id="@+id/contentChattingButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/content_chatting_button_text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:backgroundTint="?colorTertiary"/>
+
+
+
+
     
         
 </androidx.constraintlayout.widget.ConstraintLayout>

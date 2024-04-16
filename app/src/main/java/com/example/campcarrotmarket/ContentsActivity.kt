@@ -2,55 +2,58 @@ package com.example.campcarrotmarket
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.util.Log
 import android.view.View
+import android.widget.LinearLayout
 import android.window.OnBackInvokedDispatcher
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.campcarrotmarket.adapter.ContentsRecyclerViewAdapter
 import com.example.campcarrotmarket.data.Content
 import com.example.campcarrotmarket.data.User
 import com.example.campcarrotmarket.databinding.ActivityContentsBinding
+import com.example.campcarrotmarket.repository.Repository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 class ContentsActivity : AppCompatActivity() {
 
-    private val binding: ActivityContentsBinding by lazy {
-        ActivityContentsBinding.inflate(layoutInflater)
+    companion object {
+        lateinit var recyclerViewAdapter: ContentsRecyclerViewAdapter
     }
 
+    private val binding by lazy { ActivityContentsBinding.inflate(layoutInflater) }
+    private val repository by lazy { Repository(this) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        recyclerViewAdapter = ContentsRecyclerViewAdapter(repository.contents, contentClickListener)
         initView()
     }
 
     private fun initView() {
-
-        val testContents = mutableListOf<Content>()
-        repeat(30) {
-            testContents.add(
-                Content(
-                    title = "",
-                    imageRes = R.drawable.image_placeholder
-                )
-            )
-        }
-
-        // todo: getData
-        val recyclerViewAdapter = ContentsRecyclerViewAdapter(testContents, contentClickListener)
         with(binding) {
             contentsRecyclerView.adapter = recyclerViewAdapter
+            contentsRecyclerView.addItemDecoration(
+                DividerItemDecoration(this@ContentsActivity, LinearLayout.VERTICAL))
             contentsRecyclerView.layoutManager = LinearLayoutManager(this@ContentsActivity)
             notificationImageView.setOnClickListener(notificationImageviewClickListener)
             addressExpandImageView.setOnClickListener(addressExpandImageviewClickListener)
         }
     }
 
-    private val contentClickListener: (Content) -> Unit = {
+    private val contentClickListener: (Content, Int) -> Unit = { content, index ->
         startActivity(
             Intent(this, ContentActivity::class.java).apply {
-                putExtra(CONTENT_EXTRA, it)
+                putExtra(CONTENT_EXTRA, content)
+                putExtra(USER_EXTRA, User()) // todo: make user
+                putExtra(CONTENT_INDEX_EXTRA, index)
             }
         )
     }
@@ -65,6 +68,6 @@ class ContentsActivity : AppCompatActivity() {
 
     override fun getOnBackInvokedDispatcher(): OnBackInvokedDispatcher {
         return super.getOnBackInvokedDispatcher()
-        // todo: 종료 여부 AlertDialog
+
     }
 }

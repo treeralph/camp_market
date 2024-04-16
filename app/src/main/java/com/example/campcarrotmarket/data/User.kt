@@ -12,6 +12,7 @@ data class User(
     val id: Long = -1,
     val name: String = "",
     val address: String = "",
+    val profileImageRes: Int = -1,
     val temperature: Float = 0f,
     val contentList: List<Long> = listOf(),
     val likeList: List<Long> = listOf()

@@ -1,5 +1,6 @@
 package com.example.campcarrotmarket.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -9,7 +10,7 @@ import com.example.campcarrotmarket.databinding.ContentsItemBinding
 
 class ContentsRecyclerViewAdapter(
     private val items: List<Content>,
-    private val itemClickListener: (Content) -> Unit,
+    private val itemClickListener: (Content, Int) -> Unit,
 ): RecyclerView.Adapter<ContentsRecyclerViewAdapter.ContentsViewHolder>() {
 
     private val itemList = mutableListOf<Content>()
@@ -26,13 +27,30 @@ class ContentsRecyclerViewAdapter(
             contentsImageView.setImageResource(currentItem.imageRes)
             contentsTitleTextView.text = currentItem.title
             contentsAddressTextView.text = currentItem.address
-            contentsPriceValueTextView.text =
-                currentItem.price.toString() // todo: number format
-            contentsCountChattingTextView.text = currentItem.chattingList.size.toString()
-            contentsCountHeartTextView.text = currentItem.likeUserList.size.toString()
-            root.setOnClickListener { itemClickListener(currentItem) }
+            contentsPriceValueTextView.text = currentItem.price.toString() // todo: number format
+            contentsCountChattingTextView.text = currentItem.numChatting.toString()
+            contentsCountHeartTextView.text = currentItem.numLike.toString()
+            root.setOnClickListener { itemClickListener(currentItem, position) }
         }
     }
+
+    override fun onBindViewHolder(
+        holder: ContentsViewHolder,
+        position: Int,
+        payloads: MutableList<Any>
+    ) {
+        if(payloads.isEmpty()) {
+            super.onBindViewHolder(holder, position, payloads)
+        } else {
+            for(payload in payloads) {
+                Log.i("TAG", "onBindViewHolder: payload: $payload")
+                with(holder.binding) {
+                    contentsPriceValueTextView.text = payload.toString()
+                }
+            }
+        }
+    }
+
 
     override fun getItemCount(): Int {
         return itemList.size

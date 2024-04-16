@@ -1,5 +1,6 @@
 package com.example.campcarrotmarket.data
 
+import android.os.Parcel
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
@@ -19,6 +20,8 @@ data class Content(
     val address: String = "",
     val price: Int = -1,
     val imageRes: Int = -1,
-    val chattingList: List<Long> = listOf(),
-    val likeUserList: List<Long> = listOf()
+    val numChatting: Int = 0,
+    val numLike: Int = 0,
+    val user: String = ""
 ): Parcelable
+
