@@ -1,25 +1,23 @@
 package com.example.campcarrotmarket
 
+import android.content.DialogInterface
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.util.Log
+import android.provider.Settings
 import android.view.View
 import android.widget.LinearLayout
-import android.window.OnBackInvokedDispatcher
+import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationManagerCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.campcarrotmarket.adapter.ContentsRecyclerViewAdapter
 import com.example.campcarrotmarket.data.Content
-import com.example.campcarrotmarket.data.User
 import com.example.campcarrotmarket.databinding.ActivityContentsBinding
 import com.example.campcarrotmarket.repository.Repository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 
 class ContentsActivity : AppCompatActivity() {
 
@@ -29,11 +27,46 @@ class ContentsActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityContentsBinding.inflate(layoutInflater) }
     private val repository by lazy { Repository(this) }
+
+    private val exitDialogButtonClickListener = object: DialogInterface.OnClickListener {
+        override fun onClick(dialog: DialogInterface?, which: Int) {
+            when(which) {
+                DialogInterface.BUTTON_POSITIVE -> finish()
+                DialogInterface.BUTTON_NEGATIVE -> dialog?.dismiss()
+            }
+        }
+    }
+
+    private val exitDialogBuilder by lazy {
+        AlertDialog.Builder(this).apply {
+            setMessage(resources.getString(R.string.contents_exit_dialog_title))
+            setPositiveButton(
+                resources.getString(R.string.contents_exit_dialog_positive_text),
+                exitDialogButtonClickListener
+            )
+            setNegativeButton(
+                resources.getString(R.string.contents_exit_dialog_negative_text),
+                exitDialogButtonClickListener
+            )
+        }
+    }
+
+    private val onBackPressedCallback = object: OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            exitDialogBuilder.show()
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        onBackPressedDispatcher.addCallback(onBackPressedCallback)
 
-        recyclerViewAdapter = ContentsRecyclerViewAdapter(repository.contents, contentClickListener)
+        recyclerViewAdapter = ContentsRecyclerViewAdapter(
+            items = repository.contents,
+            itemClickListener = contentClickListener,
+            itemLongClickListener =  contentLongClickListener
+        )
+
         initView()
     }
 
@@ -44,7 +77,8 @@ class ContentsActivity : AppCompatActivity() {
                 DividerItemDecoration(this@ContentsActivity, LinearLayout.VERTICAL))
             contentsRecyclerView.layoutManager = LinearLayoutManager(this@ContentsActivity)
             notificationImageView.setOnClickListener(notificationImageviewClickListener)
-            addressExpandImageView.setOnClickListener(addressExpandImageviewClickListener)
+            floatingActionButton.setOnClickListener{
+                floatingActionButtonClickListener(contentsRecyclerView) }
         }
     }
 
@@ -52,22 +86,27 @@ class ContentsActivity : AppCompatActivity() {
         startActivity(
             Intent(this, ContentActivity::class.java).apply {
                 putExtra(CONTENT_EXTRA, content)
-                putExtra(USER_EXTRA, User()) // todo: make user
                 putExtra(CONTENT_INDEX_EXTRA, index)
             }
         )
     }
 
+    private val contentLongClickListener: (Content, Int) -> Unit = { content, index ->
+
+    }
+
     private val notificationImageviewClickListener: (View) -> Unit = {
-        // todo: make notification
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (!NotificationManagerCompat.from(this).areNotificationsEnabled()) {
+                val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
+                    putExtra(Settings.EXTRA_APP_PACKAGE, packageName)
+                }
+                startActivity(intent)
+            } else notification()
+        }
     }
 
-    private val addressExpandImageviewClickListener: (View) -> Unit = {
-        // todo: locate list
-    }
-
-    override fun getOnBackInvokedDispatcher(): OnBackInvokedDispatcher {
-        return super.getOnBackInvokedDispatcher()
-
+    private val floatingActionButtonClickListener: (RecyclerView) -> Unit = {
+        it.scrollToPosition(0)
     }
 }

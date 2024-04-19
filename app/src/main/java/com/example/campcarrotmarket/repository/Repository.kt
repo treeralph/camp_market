@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.Resources
 import com.example.campcarrotmarket.R
 import com.example.campcarrotmarket.data.Content
+import kotlin.random.Random
 
 class Repository(context: Context) {
 
@@ -43,7 +44,8 @@ class Repository(context: Context) {
                     imageRes = imageResources[index],
                     user = contentUsers[index],
                     numChatting = contentNumChatting[index],
-                    numLike = contentNumLike[index]
+                    numLike = contentNumLike[index],
+                    temperature = Random.nextDouble(25.0, 45.0)
                 )
             )
         }

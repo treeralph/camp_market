@@ -2,9 +2,12 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.CampCarrotMarket" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
+        <!--
         <item name="colorPrimary">@color/white</item>
-        <item name="colorSecondary">#868B94</item>
+        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorSecondary">#D1D1D1</item>
         <item name="colorTertiary">#FF6F0F</item>
+        -->
         <item name="android:titleTextAppearance">@style/TextAppearance.Material3.TitleLarge</item>
         <item name="android:textAppearanceLarge">@style/TextAppearance.Material3.BodyLarge</item>
         <item name="android:textAppearanceMedium">@style/TextAppearance.Material3.BodyMedium</item>

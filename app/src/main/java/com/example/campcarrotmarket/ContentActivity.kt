@@ -1,25 +1,22 @@
 package com.example.campcarrotmarket
 
-import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.activity.enableEdgeToEdge
-import androidx.annotation.IntRange
+import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.example.campcarrotmarket.adapter.ContentsRecyclerViewAdapter
 import com.example.campcarrotmarket.data.Content
-import com.example.campcarrotmarket.data.User
 import com.example.campcarrotmarket.databinding.ActivityContentBinding
 
 class ContentActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityContentBinding.inflate(layoutInflater) }
     private val recyclerViewAdapter = ContentsActivity.recyclerViewAdapter
+    private lateinit var content: Content
+    private var contentIndex: Int = 0
+    private var isLike = false
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,12 +24,11 @@ class ContentActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         try {
-            val content = intent.getParcelableExtra(CONTENT_EXTRA, Content::class.java)!!
-            val user = intent.getParcelableExtra(USER_EXTRA, User::class.java)!!
-            val contentIndex = intent.getIntExtra(CONTENT_INDEX_EXTRA, -1).also {
+            content = intent.getParcelableExtra(CONTENT_EXTRA, Content::class.java)!!
+            contentIndex = intent.getIntExtra(CONTENT_INDEX_EXTRA, -1).also {
                 if(it == -1) throw Exception()
             }
-            initView(content, user, contentIndex)
+            initView()
         } catch(e: Exception) {
             // TODO: show snackbar
             Log.e("TAG", "onCreate: get extra data error")
@@ -40,25 +36,44 @@ class ContentActivity : AppCompatActivity() {
         }
     }
 
-    private fun initView(content: Content, user: User, contentIndex: Int) {
+    private fun initView() {
         with(binding) {
             contentImageView.setImageResource(content.imageRes)
-            userProfileImageview.setImageResource(user.profileImageRes)
-            userNameTextView.text = user.name
-            userAddressTextView.text = user.address
-            userTemperatureTextView.text = user.temperature.toString()
+            userProfileImageview.setImageResource(R.drawable.user_icon)
+            userNameTextView.text = content.user
+            userAddressTextView.text = content.address
+            userTemperatureTextView.text = temperatureFormatString(content.temperature)
             contentTitleTextView.text = content.title
             contentDescriptionTextView.text= content.description
-            contentPriceTextView.text = content.price.toString()
+            contentPriceTextView.text = currencyFormatString(content.price)
             contentChattingButton.setOnClickListener(contentChattingButtonClickListener)
-            contentLikeImageView.setOnClickListener{
-                // TODO: Like
-                // recyclerViewAdapter.notifyItemChanged(it, )
-            }
+            backButton.setOnClickListener(backButtonClickListener)
+            contentLikeImageView.setOnClickListener(contentLikeImageViewClickListener)
+            contentLikeImageView.setImageResource(
+                if(isLike) R.drawable.ic_heart_filled
+                else R.drawable.ic_heart
+            )
         }
     }
 
+    private val contentLikeImageViewClickListener: (View) -> Unit = {
+        var flag = 1
+        (it as ImageView).setImageResource(
+            if(isLike) {
+                flag = -1
+                R.drawable.ic_heart
+            } else R.drawable.ic_heart_filled
+        )
+        recyclerViewAdapter.itemChangedAt(
+            contentIndex, content.copy(numLike = content.numLike + flag))
+        isLike = !isLike
+    }
+
     private val contentChattingButtonClickListener: (View) -> Unit = {
-        // User().writeToParcel()
+
+    }
+
+    private val backButtonClickListener: (View) -> Unit = {
+        finish()
     }
 }

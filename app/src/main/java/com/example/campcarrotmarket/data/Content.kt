@@ -22,6 +22,7 @@ data class Content(
     val imageRes: Int = -1,
     val numChatting: Int = 0,
     val numLike: Int = 0,
-    val user: String = ""
+    val user: String = "",
+    val temperature: Double = 0.0,
 ): Parcelable
 

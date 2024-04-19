@@ -5,12 +5,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.example.campcarrotmarket.currencyFormatString
 import com.example.campcarrotmarket.data.Content
 import com.example.campcarrotmarket.databinding.ContentsItemBinding
 
 class ContentsRecyclerViewAdapter(
     private val items: List<Content>,
     private val itemClickListener: (Content, Int) -> Unit,
+    private val itemLongClickListener: (Content, Int) -> Unit = { _, _ -> },
 ): RecyclerView.Adapter<ContentsRecyclerViewAdapter.ContentsViewHolder>() {
 
     private val itemList = mutableListOf<Content>()
@@ -27,10 +29,14 @@ class ContentsRecyclerViewAdapter(
             contentsImageView.setImageResource(currentItem.imageRes)
             contentsTitleTextView.text = currentItem.title
             contentsAddressTextView.text = currentItem.address
-            contentsPriceValueTextView.text = currentItem.price.toString() // todo: number format
+            contentsPriceValueTextView.text = currencyFormatString(currentItem.price)
             contentsCountChattingTextView.text = currentItem.numChatting.toString()
             contentsCountHeartTextView.text = currentItem.numLike.toString()
             root.setOnClickListener { itemClickListener(currentItem, position) }
+            root.setOnLongClickListener {
+                itemLongClickListener(currentItem, position)
+                true
+            }
         }
     }
 
@@ -51,9 +57,13 @@ class ContentsRecyclerViewAdapter(
         }
     }
 
-
     override fun getItemCount(): Int {
         return itemList.size
+    }
+
+    fun itemChangedAt(index: Int, content: Content) {
+        itemList[index] = content
+        notifyItemChanged(index)
     }
 
     inner class ContentsViewHolder(
